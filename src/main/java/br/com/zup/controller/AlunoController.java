@@ -30,13 +30,14 @@ public class AlunoController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<Aluno> cadastro(@RequestBody @Valid AlunoForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<DetalheAlunoDto> cadastro(@RequestBody @Valid AlunoForm form, UriComponentsBuilder uriBuilder) {
 		
 		Aluno aluno = new Aluno(form);
 		alunoRepository.save(aluno);
+		DetalheAlunoDto alunoDto = new DetalheAlunoDto(aluno);
 		
 		URI uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();
-		return ResponseEntity.created(uri).body(aluno);
+		return ResponseEntity.created(uri).body(alunoDto);
 	}
 	
 	@GetMapping("/{id}")
